@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>hbzolotov</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ */
+@media (max-width: 600px) {
+
+    /* Текст на слайдах */
+    .title {
+        font-size: 28px !important;
+        line-height: 1.2;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .subtitle, .mini {
+        font-size: 14px !important;
+        line-height: 1.3;
+        padding: 0 12px;
+        text-align: center;
+    }
+
+    .big-note {
+        font-size: 20px !important;
+        padding: 0 15px;
+        line-height: 1.3;
+    }
+
+    /* Контейнеры */
+    .content {
+        padding: 20px 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Картинки по углам */
+    .corner-img {
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 10px;
+    }
+
+    .corner-top-left    { top: 8px; left: 8px; }
+    .corner-top-right   { top: 8px; right: 8px; }
+    .corner-bottom-left { bottom: 8px; left: 8px; }
+    .corner-bottom-right{ bottom: 8px; right: 8px; }
+
+    /* GIF тоже уменьшится */
+    .corner-img.gif {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    /* Фото на моментах */
+    .moment-photo {
+        width: 85% !important;
+        max-height: 260px !important;
+        margin: 0 auto;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Видео */
+    video {
+        width: 90% !important;
+        max-height: 280px !important;
+        border-radius: 12px;
+    }
+
+    /* Кнопки перелистывания */
+    .nav-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+
+    /* Слайды */
+    .slide {
+        padding: 10px 0;
+        overflow: hidden;
+    }
+}
+.corner-img {
+  position: absolute;
+  width: 260px;         /* можешь менять размер */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px; /* закругление углов */
+  z-index: 5;
+}
+
+/* позиции углов */
+.corner-top-left    { top: 10px; left: 10px; }
+.corner-top-right   { top: 10px; right: 10px; }
+.corner-bottom-left { bottom: 10px; left: 10px; }
+.corner-bottom-right{ bottom: -10px; right: 10px; }
+/* === Дождь из сердечек (замедленный, без вращения) === */
+.hearts-container {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1; /* важно — под твоим белым блоком */
+}
+
+.heart {
+  position: absolute;
+  top: -20px;
+  font-size: 22px;
+  color: #fed9e6; /* ❤️ меняй цвет тут */
+  animation: fall 6s linear infinite; /* скорость падения — увеличишь число → будет медленнее */
+}
+
+/* Анимация падения — без вращения */
+@keyframes fall {
+  0% {
+    transform: translateY(-40px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh);
+    opacity: 0.8;
+  }
+}
+
+  .bday-photo {
+    position: absolute;
+    width: 270px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px solid white;
+}
+
+/* Верхнее фото */
+.bday-top {
+    top: 20px;
+    right: 20px;
+}
+
+/* Нижнее фото */
+.bday-bottom {
+    bottom: 20px;
+    left: 20px;
+}
+
+:root{
+  --bg-deep:#f8acc2;
+  --panel-bg:#ffffff;
+  --accent:#e7879c;
+  --text:#000000;
+  --muted:rgba(0, 0, 0, 0.7);
+}
+html,body{
+  margin:0; height:100%;
+  background:linear-gradient(180deg,var(--bg-deep),#ee95b4);
+  font-family:"Poppins",sans-serif; color:var(--text);
+}
+
+/* ======= БЛОК ДОСТУПА ======= */
+#gate{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:20px; background:linear-gradient(180deg,var(--bg-deep),#ffb0b8);
+  z-index:9999;
+}
+#gate-box{
+  width:min(500px,95%);
+  background:var(--panel-bg);
+  padding:32px; border-radius:18px;
+  box-shadow:0 10px 40px rgb(241, 157, 182);
+  text-align:center;
+}
+.g-title{font-size:32px;font-weight:700;margin-bottom:10px;}
+.g-sub{font-size:16px;color:var(--muted);margin-bottom:20px;}
+.counter{margin:20px auto;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.count-item{background:rgba(255, 246, 246, 0.05);padding:12px 16px;border-radius:10px;text-align:center;}
+.count-item .num{font-size:22px;font-weight:700;}
+.count-item .label{font-size:16px;color:var(--muted);}
+.pass-box{margin-top:22px;display:flex;justify-content:center;gap:10px;}
+.pass-input{padding:8px 12px;border-radius:8px;border:none;outline:none;font-size:18px;width:160px;background:#11111100;color:rgb(0, 0, 0);}
+.pass-btn{padding:8px 12px;border-radius:8px;background:var(--accent);border:none;cursor:pointer;color:rgb(0, 0, 0);}
+
+/* ======= ОСНОВНОЙ САЙТ ======= */
+.stage{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;display:none;}
+.card{width:min(1000px,92%);height:min(640px,85vh);background:var(--panel-bg);border-radius:18px;box-shadow:0 10px 40px rgba(0, 0, 0, 0.49);position:relative;overflow:hidden;padding:36px;display:flex;align-items:center;justify-content:center;}
+.slides{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transform:scale(1.01);transition:opacity 600ms ease,transform 600ms ease;pointer-events:none;}
+.slide.active{opacity:1;transform:scale(1);pointer-events:auto;}
+.title{font-size:34px;font-weight:700;margin-bottom:12px;}
+.subtitle{font-size:20px;color:var(--muted);}
+.arrow {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:auto;
+  height:auto;
+  background:none;        /* ← фон убрали */
+  border-radius:0;        /* ← форма убрана */
+  padding:0;              /* ← убираем отступы */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:60;
+  cursor:pointer;
+}
+.edge{position:absolute;top:0;bottom:0;width:20%;cursor:pointer;}
+.edge.left{left:0;} .edge.right{right:0;}
+.counter-large{margin:20px auto 6px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.count-item-big{background:rgba(255,255,255,0.04);padding:14px 18px;border-radius:10px;text-align:center;}
+.count-item-big .num{font-weight:700;font-size:20px;}
+.count-item-big .label{font-size:20px;color:var(--muted);}
+.media-left{display:flex;gap:28px;align-items:center;width:100%;height:100%;}
+.media{flex:0 0 360px;max-width:40%;height:70%;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+.media img,.media video{width:100%;height:100%;object-fit:cover;}
+.text-center{flex:1;text-align:center;}
+.big-note{font-size:clamp(22px,3.2vw,40px);font-weight:700;margin-bottom:8px;}
+.mini{font-size:20px;color:var(--muted);}
+.audio-control{position:absolute;top:16px;right:16px;display:none;z-index:70;}
+.play-pill{background: rgba(255,255,255,0.06);padding:8px 10px;border-radius:10px;cursor:pointer;}
+@media (max-width:720px){.media{display:none;}}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+
+<script>
+
+</script>
+<!-- ===== БЛОК ДОСТУПА ===== -->
+<div id="gate">
+  <div id="gate-box">
+    <div class="g-title">Доступ откроется 23.11.2025</div>
+    <div class="g-sub">До момента открытия осталось:</div>
+    <div class="counter" id="preCounter"></div>
+    <div class="g-sub" style="margin-top:25px;">Или введите пароль:</div>
+    <div class="pass-box">
+      <input id="passInput" class="pass-input" placeholder="Пароль…" />
+      <button class="pass-btn" onclick="tryPass()">Открыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ОСНОВНОЙ САЙТ ===== -->
+<div class="stage" id="mainSite">
+  <div class="card">
+    <div class="slides" id="slides">
+
+      <!-- 1 -->
+      <section class="slide active" data-index="0">
+        <div class="content"><h1 class="title">С днём рождения дорогой Руслан!</h1><p class="subtitle">      Такие люди как ты украшают мир своим присутсвиeм ❤️ </p></div>
+    <!-- Фото в правом верхнем углу -->
+<img src="images/hbbbb.jpg" class="bday-photo bday-top">
+
+<!-- Фото в левом нижнем углу -->
+<img src="images/wwwwww.jpg" class="bday-photo bday-bottom">
+      </section>
+
+      <!-- 2 -->
+      <section class="slide" data-index="1">
+        <div>
+          <h2 class="title">С нашего знакомства прошло уже</h2>
+          <div class="counter-large" id="counter-1"></div>
+          <p class="subtitle">Изменилось столько всего, изменились и мы сами, время летит незаметно быстро</p>
+        </div>
+        <img src="images/kotsvetok.jpg" class="corner-img corner-top-left">
+<img src="images/kotsvetokty.jpg" class="corner-img corner-bottom-right">
+      </section>
+
+      <!-- 3 -->
+      <section class="slide" data-index="2">
+        <div>
+          <h2 class="title">С того самого дня когда ты отправил мне этот трек прошло уже</h2>
+          <div class="counter-large" id="counter-2"></div>
+          <p class="subtitle">Эта песня не то чтобы лучшая, она самая ахуенная и несет в себе больше чем просто звук</p>
+        </div>
+        <img src="images/ttttt.jpg" class="corner-img corner-bottom-right">
+      </section>
+
+      <!-- 4 -->
+      <section class="slide" data-index="3">
+        <div>
+          <h2 class="title">С Настасошки прошло вот уже</h2>
+          <div class="counter-large" id="counter-3"></div>
+          <p class="subtitle">Очень мило как из шутливой формы имени она стала чем-то уникальным, насть будет много, но той которую ты назовешь так одна</p>
+        </div>
+        <img src="images/love.jpg" class="corner-img corner-top-right">
+      </section>
+
+      <!-- 5–9: Моменты с фото -->
+      <section class="slide" data-index="4">
+        <div class="media-left">
+          <div class="media"><img src="images/zagryjenoe.png" /></div>
+          <div class="text-center"><div class="big-note">Этот день по настоящему особенный из-за тебя</div><div class="mini">Ты невероятный человек, в тебе собралось столько всего прекрасного, я удивляюсь как такое вообще возможно, а главное, что с таким человеком знакома я, первым делом я бы отметила какой ты мудрый человек, с тобой можно поговорить на любую тему и во всем ты разбираешься, что очень редко встречается, а еще ты прекрасно видишь всех людей насквозь, ведешь их за собой и замечательно руководишь чем-то. ты очень проницательный и в тебе есть то, чего нет в других, загадка, какая-то особенна аура что выделяет тебя среди других. невозможно не думать о твоих положительных качествах которых просто не счесть, какой ты добрый и идеально можешь очаровать любую
+девушку и не только, твое отношение может стать для многих золотым стандартом. ты очень понимающий, с тобой можно спокойно чувствовать себя и не думать о всем остальном. а то как ты можешь разрядить любую обстановку своим присутствием - amazingly.</div></div>
+          
+        </div>
+      </section>
+      <section class="slide" data-index="5">
+        <div class="media-left">
+          <div class="media"><img src="images/dvakota.jpg" /></div>
+          <div class="text-center"><div class="big-note">Ты Кортни Лав, ты как самый дикий драг</div><div class="mini">Поэтому желаю чтоб все твои проекты были успешнее всех остальных в мире, чтоб связь с тобой была круче чем с Дуровым и ничего тебя не останавливало никогда! и все трудности лишь изначально казались ими и решались по щелчку, чтоб
+сама мона лиза завидовала твоей улыбке! в
+жизни бывает всякое и трудности и взлеты, надеюсь что ты всегда будешь летать на седьмом небе от счастья ❤️ ко всему этому будь ты в мире nft - ты бы был самой уникальной и бесценной картинкой которую
+хотят все, а получится на нее даже посмотреть лишь у единиц, а что ж там говорить о том что завладеть тобой! по тебе видно как ты относишься ко всему с душой и с интересом и все вокруг тебя красивое, идеальное, прямо вызывает - ecstasy ! сам по себе ты хоть и загадочный человек, но должна отметить что сам ты на высоте и поэтому я думаю ты и сам понимаешь какой ты - especially great!!! поддерживая forever alone ты не только «один» ты - the best one in the whole world, yk, ik.</div></div>
+      </section>
+      <section class="slide" data-index="6">
+        <div class="media-left">
+          <div class="media"><img src="images/krem.jpg" /></div>
+          <div class="text-center"><div class="big-note">Ты лучше чем интернет</div><div class="mini">И желаю чтобы вся твоя жизнь была очень красочной, веселой, интересной, чтоб было множество радостных моментов, эмоции положительные зашкаливали, чтобы все что ты делал приносило тебе только удовольствие!! пусть твое сердце согревают преданные и близкие тебя люди которые рядом с тобой несмотря на все невзгоды! в жизни кучу звезд, и одна из них светит тебе каждый день и ведет тебя ❤️ пускай все твои мечты сбываются как только ты о ней подумаешь! пожелаю чтоб каждый твой день был наполнен улыбками и легкостью, моментами которые хочется запомнить надолго, а главное наедине и в спокойствие или в кругу верных и близких людей, которые безусловно понимают с полуслова ❤️ оставайся таким же милым,
+ахуенным, умным, мудрым и самым лучшим, конечно всегда можно расти выше, но ты и сейчас безумно красивый, надежный, щедрый, внимательный, заботливый, отзывчивый, с прекрасным чувством юмора, пускай это все остается и только приумножается с годами, в итоге успехов, любви, гармонии с собой, а главное - happiness ❤️
+
+</div></div>
+        </div>
+      </section>
+      <section class="slide" data-index="7">
+        <div class="media-left">
+          <div class="media"><img src="images/ttttt.jpg" /></div>
+          <div class="text-center"><div class="big-note">Thank you very much</div>Спасибо тебе за все что ты делаешь, это огромное спасибо не только от меня, а от всех кто тебя знает, а таких людей очень-очень много, весь фейм забрал в этом году ты и дальше - больше. спасибо за все что между нами было, за все моменты, за все слова, я благодарна тебе за всё. о каждом моменте что лежит у меня глубоко в сердце можно расписывать часами и тысячью словами. искренне рада что все это было и было с тобой, сколько эмоций и улыбок, слез радости ты подарил. столько отдельных локальных моментов, начиная с утки и дуры, настасошки, можно перечислять бесконечно и бесконечно смеяться с этого и понимать что это было как вчера. все эти воспоминания греют меня и даже в самый ужасный день, вспоминая их, становится лучше. я помню хаха как часто мы сидели до самого утра, даже когда тебе надо было ехать куда-то на поезде, или как ты репостил мои посты и сохранял мои сигны. с тобой я чувствовала себя абсолютно беззаботно и счастливо и ты, надеюсь, тоже. <div class="mini"></div></div>
+        </div>
+      </section>
+      <section class="slide" data-index="8">
+        <div class="media-left">
+          <div class="media"><img src="images/cmok.jpg" /></div>
+          <div class="text-center"><div class="big-note">Вот и все</div><div class="mini">Еще раз поздравляю и обнимаю!!! пускай все пожелания в этот день осуществятся и воспоминания о поздравлениях будут приносить улыбку каждый день. Когда уже все сказано, остается лишь напомнить какой ты незабываемый и важный человек ❤️  Пусть твое сердце будет открытым, душа остается чистой, а улыбка будет самой искренней! Наслаждайся каждым мигом в своей жизни и радуйся миру вокруг ❤️</div></div>
+        </div>
+      </section>
+
+      <!-- 10: Видео -->
+      <section class="slide" data-index="9">
+        <div class="media-left">
+          <div class="media"><video id="mainVideo" src="images/vidos.mp4" controls></video></div>
+          <div class="text-center"><div class="big-note">С любовью, от Анастасии ❤️ </div><div class="mini">Надеюсь тебе очень понравилось и мне удалось чуть-чуть проявить креатива и поздравить тебя не как обычно не знаю, в последний раз, но надеюсь получилось достаточно запоминающиеся! Все поздравление писала я сама, а с сайтом мне помог гпт, но главное что сделано это все от души ведь мне очень хотелось оставить след!</div></div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Стрелки -->
+    <div class="arrow left" id="btn-prev"><svg viewBox="0 0 24 24"><path d="M15 6 L9 12 L15 18" stroke="white" stroke-width="2.2"/></svg></div>
+    <div class="arrow right" id="btn-next"><svg viewBox="0 0 24 24"><path d="M9 6 L15 12 L9 18" stroke="white" stroke-width="2.2"/></svg></div>
+
+    <div class="edge left" id="edge-left"></div>
+    <div class="edge right" id="edge-right"></div>
+
+    <!-- Музыка -->
+    <div class="audio-control" id="audio-control">
+      <div class="play-pill" id="audioToggle">⏵ / ⏸</div>
+    </div>
+    <audio id="bg-audio" src="/images/zvyyyyk.mp3" loop></audio>
+
+  </div>
+</div>
+
+<script>
+
+/* ====== ДОСТУП ПО ДАТЕ ====== */
+const TARGET=new Date("2025-11-23T00:00:00"); const PASSWORD="svekty"; let unlocked=false;
+function makeGateCounter(el){["Дней","Часов","Минут","Секунд"].forEach(t=>{const d=document.createElement("div");d.className="count-item";d.innerHTML=`<div class="num">0</div><div class="label">${t}</div>`;el.appendChild(d);});}
+function updateGateCounter(){const now=new Date();let diff=Math.floor((TARGET-now)/1000);if(diff<=0&&!unlocked){openSite();return;}if(diff<0) diff=0;const d=Math.floor(diff/86400);diff%=86400;const h=Math.floor(diff/3600);diff%=3600;const m=Math.floor(diff/60);const s=diff%60;const nums=document.querySelectorAll("#preCounter .num");nums[0].textContent=d;nums[1].textContent=h.toString().padStart(2,'0');nums[2].textContent=m.toString().padStart(2,'0');nums[3].textContent=s.toString().padStart(2,'0');}
+function tryPass(){const val=document.getElementById("passInput").value.trim();if(val===PASSWORD){unlocked=true;openSite();}else{alert("Неверный пароль");}}
+function openSite(){document.getElementById("gate").style.display="none";document.getElementById("mainSite").style.display="flex";}
+
+/* ====== СЛАЙДЕР ====== */
+let slides=[],current=0;
+function initSlides(){slides=Array.from(document.querySelectorAll(".slide"));document.getElementById("btn-next").onclick=()=>showSlide(current+1);document.getElementById("btn-prev").onclick=()=>showSlide(current-1);document.getElementById("edge-right").onclick=()=>showSlide(current+1);document.getElementById("edge-left").onclick=()=>showSlide(current-1);document.getElementById('audioToggle').onclick=()=>{const a=document.getElementById('bg-audio');a.paused?a.play():a.pause();};}
+function showSlide(i){i=(i+slides.length)%slides.length;slides[current].classList.remove("active");slides[i].classList.add("active");current=i;handleSlideSound();}
+function handleSlideSound(){const audio=document.getElementById("bg-audio");const ctrl=document.getElementById("audio-control");if(current===2&&audio.src){ctrl.style.display='block';audio.play().catch(()=>{});}else{audio.pause();ctrl.style.display='none';}}
+
+/* ====== СЧЁТЧИКИ НА СЛАЙДАХ ====== */
+const COUNTERS=[{el:'counter-1',from:'2022-09-04T00:00:00'},{el:'counter-2',from:'2023-10-25T00:00:00'},{el:'counter-3',from:'2023-11-01T00:00:00'}];
+function makeBigCounter(el){["Дней","Часов","Минут","Секунд"].forEach(t=>{const d=document.createElement("div");d.className="count-item-big";d.innerHTML=`<div class="num">0</div><div class="label">${t}</div>`;el.appendChild(d);});}
+function updateBigCounter(el,from){const now=new Date();const start=new Date(from);let diff=Math.floor((now-start)/1000);if(diff<0) diff=0;const d=Math.floor(diff/86400);diff%=86400;const h=Math.floor(diff/3600);diff%=3600;const m=Math.floor(diff/60);const s=diff%60;const nums=el.querySelectorAll(".num");nums[0].textContent=d;nums[1].textContent=h.toString().padStart(2,'0');nums[2].textContent=m.toString().padStart(2,'0');nums[3].textContent=s.toString().padStart(2,'0');}
+function initBigCounters(){COUNTERS.forEach(c=>{const el=document.getElementById(c.el);makeBigCounter(el);updateBigCounter(el,c.from);setInterval(()=>updateBigCounter(el,c.from),1000);});}
+
+/* ====== INIT ====== */
+document.addEventListener("DOMContentLoaded",()=>{
+  makeGateCounter(document.getElementById("preCounter"));
+  setInterval(updateGateCounter,1000);
+  updateGateCounter();
+  initSlides();
+  initBigCounters();
+});
+/* === Генерация сердечек === */
+function spawnHearts() {
+  const container = document.getElementById("hearts");
+  setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = "❤";
+
+    // случайная позиция
+    h.style.left = Math.random() * 100 + "vw";
+
+    // случайная задержка анимации
+    h.style.animationDelay = (Math.random() * 3) + "s";
+
+    container.appendChild(h);
+
+    // удаляем, чтобы не перегружать
+    setTimeout(() => h.remove(), 7000);
+  }, 400); /* частота появления — поставь 700 чтобы было реже */
+}
+
+spawnHearts();
+</script>
+
+<div class="hearts" id="hearts"></div>
+
+
+</body>
+<div id="heart-layer"></div>
+</html>
